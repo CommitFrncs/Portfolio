@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  ROOT HTML ELEMENT
+  ─────────────────────────────────────────────────────────────
+  • lang="en"         — accessibility + SEO, tells browsers the
+                        document language
+  • data-theme=""     — starts empty so prefers-color-scheme CSS
+                        media query controls the initial theme.
+                        JS sets "light" or "dark" when the user
+                        manually toggles. Remove data-theme attr
+                        to go back to system default.
+  ================================================================
+-->
+<html lang="en" data-theme="">
+<head>
+
+  <!-- ============================================================
+       ENCODING & VIEWPORT
+       Always first — charset must appear within the first 1024
+       bytes of the document so browsers decode it correctly.
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tells IE to use the highest rendering engine available -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+  <!-- ============================================================
+       PRIMARY SEO
+  ============================================================ -->
+  <title>Francis Ajayi | Frontend Developer &amp; UI Designer</title>
+
+  <meta
+    name="description"
+    content="Francis Ajayi (@commitfrncs) — Frontend Developer, UI Designer &amp; Content Creator from Nigeria. Building modern websites, clean user interfaces, and documenting the developer journey online."
+  />
+
+  <!--
+    KEYWORDS
+    Not a strong ranking signal anymore, but still used by some
+    search engines and directory crawlers.
+    EDIT: Keep this updated as your work evolves.
+  -->
+  <meta name="keywords" content="
+    Francis Ajayi,
+    Frncs,
+    commitfrncs,
+    commit.frncs,
+    commitfrncs.dev@gmail.com,
+    frontend developer Nigeria,
+    frontend developer Lagos,
+    frontend developer Ibadan,
+    UI designer Nigeria,
+    web developer Nigeria,
+    JavaScript developer,
+    HTML CSS JavaScript,
+    responsive web design,
+    freelance web developer,
+    portfolio website,
+    modern web design,
+    vanilla javascript developer,
+    GitHub Pages developer,
+    content creator tech,
+    tech creator Nigeria,
+    web designer Nigeria,
+    creative developer,
+    personal portfolio,
+    frontend engineer,
+    commitfrncs portfolio,
+    Francis portfolio,
+    developer portfolio,
+    modern UI design,
+    clean web design,
+    glassmorphism design,
+    UI UX developer,
+    self taught developer,
+    Nigerian developer,
+    coding content creator,
+    web experiences,
+    website developer
+  " />
+
+  <meta name="author"  content="Francis Ajayi" />
+  <meta name="robots"  content="index, follow" />
+
+
+  <!-- ============================================================
+       CANONICAL URL
+       Prevents duplicate-content penalties if the same page is
+       accessible at multiple URLs.
+       EDIT: Replace with your real production domain.
+  ============================================================ -->
+  <link rel="canonical" href="https://commitfrncs.github.io/" />
+
+
+  <!-- ============================================================
+       OPEN GRAPH — controls how the page appears when shared on
+       Facebook, LinkedIn, WhatsApp, etc.
+       EDIT: Replace og:image with a real 1200x630 screenshot.
+  ============================================================ -->
+  <meta property="og:type"         content="website" />
+  <meta property="og:site_name"    content="commitfrncs" />
+  <meta property="og:title"        content="Francis Ajayi | Frontend Developer" />
+  <meta property="og:description"  content="Frontend Developer, UI Designer &amp; Content Creator building modern web experiences from Ibadan, Nigeria." />
+  <meta property="og:url"          content="https://commitfrncs.github.io/" />
+  <meta property="og:image"        content="https://commitfrncs.github.io/assets/preview.jpg" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale"       content="en_NG" />
+
+
+  <!-- ============================================================
+       TWITTER / X CARD
+       Controls the preview card when shared on X (Twitter).
+       EDIT: Replace twitter:image with your real preview image.
+  ============================================================ -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@commitfrncs" />
+  <meta name="twitter:creator"     content="@commitfrncs" />
+  <meta name="twitter:title"       content="Francis Ajayi | Frontend Developer" />
+  <meta name="twitter:description" content="Frontend Developer, UI Designer &amp; Content Creator building modern web experiences from Ibadan, Nigeria." />
+  <meta name="twitter:image"       content="https://commitfrncs.github.io/assets/preview.jpg" />
+
+
+  <!-- ============================================================
+       THEME COLOR
+       Tints the browser chrome (address bar) on mobile.
+       Two entries handle light and dark mode separately.
+  ============================================================ -->
+  <meta name="theme-color" content="#0D0D0F" media="(prefers-color-scheme: dark)"  />
+  <meta name="theme-color" content="#F3F3F8" media="(prefers-color-scheme: light)" />
+
+
+  <!-- ============================================================
+       FAVICON
+       EDIT: Drop your actual favicon.png into the project root.
+       For full browser support, also add favicon.ico and
+       apple-touch-icon.png (180x180) to the root folder.
+  ============================================================ -->
+  <link rel="icon"             type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon"                  href="apple-touch-icon.png" />
+
+
+  <!-- ============================================================
+       GOOGLE FONTS
+       Syne     - Headings  (geometric, punchy, modern)
+       DM Sans  - Body      (clean, readable, contemporary)
+
+       preconnect hints tell the browser to open the DNS/TCP
+       connection to Google's servers early, reducing load time.
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..500&display=swap"
+    rel="stylesheet"
+  />
+
+
+  <!-- ============================================================
+       MAIN STYLESHEET
+       Path: assets/styles/main.css
+       All design tokens, components, and layout rules live here.
+  ============================================================ -->
+  <link rel="stylesheet" href="assets/styles/main.css" />
+
+</head>
+<body>
+
+  <!--
+    ================================================================
+    BACKGROUND ORBS - glassmorphism depth layer
+    ─────────────────────────────────────────────────────────────
+    Blurred color blobs fixed behind the entire page.
+    Glass cards need something to "blur through" — without these
+    the glassmorphism effect looks flat.
+    aria-hidden="true" removes them from the accessibility tree.
+    EDIT: Adjust colors/sizes in main.css under "BACKGROUND ORBS".
+    ================================================================
+  -->
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+  <div class="bg-orb orb-3" aria-hidden="true"></div>
+
+
+  <!--
+    ================================================================
+    SIDEBAR OVERLAY - mobile only
+    ─────────────────────────────────────────────────────────────
+    The semi-transparent backdrop behind the mobile sidebar.
+    Clicking it triggers closeSidebar() in script.js.
+    display:none by default. JS adds .visible to show it.
+    ================================================================
+  -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+
+  <!--
+    ================================================================
+    MOBILE SIDEBAR
+    ─────────────────────────────────────────────────────────────
+    Slides in from the right when the hamburger is pressed.
+    Hidden off-screen via transform: translateX(105%) in CSS.
+    JS toggles the .open class to slide it in.
+
+    EDIT: Add/remove <li> items here to match your sections.
+          Keep them in sync with the desktop nav below.
+    ================================================================
+  -->
+  <aside id="sidebar" role="navigation" aria-label="Mobile navigation">
+    <ul class="sidebar-links">
+      <li><a href="#home"     class="sidebar-link"><span class="link-num">01</span> Home</a></li>
+      <li><a href="#about"    class="sidebar-link"><span class="link-num">02</span> About</a></li>
+      <li><a href="#skills"   class="sidebar-link"><span class="link-num">03</span> Skills</a></li>
+      <li><a href="#projects" class="sidebar-link"><span class="link-num">04</span> Projects</a></li>
+      <li><a href="#contact"  class="sidebar-link"><span class="link-num">05</span> Contact</a></li>
+    </ul>
+
+    <!--
+      Social shortlinks at the bottom of the sidebar.
+      EDIT: Replace href values with your real profile URLs.
+    -->
+    <div class="sidebar-socials">
+      <a href="https://github.com/commitfrncs"   target="_blank" rel="noopener noreferrer" title="GitHub">GH</a>
+      <a href="https://x.com/commitfrncs"        target="_blank" rel="noopener noreferrer" title="X / Twitter">&#x1D54F;</a>
+      <a href="https://tiktok.com/@commitfrncs"  target="_blank" rel="noopener noreferrer" title="TikTok">TK</a>
+      <a href="https://youtube.com/@commitfrncs" target="_blank" rel="noopener noreferrer" title="YouTube">YT</a>
+    </div>
+  </aside>
+
+
+  <!--
+    ================================================================
+    NAVBAR
+    ─────────────────────────────────────────────────────────────
+    Fixed at the top (position: fixed in CSS).
+    Transparent on load. Gains glass blur + border once the user
+    scrolls past 60px (JS adds .scrolled class).
+
+    Desktop  : shows horizontal links list.
+    Mobile (<=768px) : hides links, shows hamburger button only.
+
+    EDIT: Update .nav-logo text and nav-link hrefs below.
+    ================================================================
+  -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+
+      <!-- Logo — links back to the top of the page -->
+      <a href="#home" class="nav-logo">commit<span>frncs</span></a>
+
+      <!-- Desktop nav links — hidden on mobile via CSS -->
+      <ul class="nav-links">
+        <li><a href="#home"     class="nav-link">Home</a></li>
+        <li><a href="#about"    class="nav-link">About</a></li>
+        <li><a href="#skills"   class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact"  class="nav-link">Contact</a></li>
+      </ul>
+
+      <!-- Right side: theme toggle + hamburger (mobile only) -->
+      <div class="nav-right">
+
+        <!--
+          THEME TOGGLE
+          Cycles: System (🖥) -> Light (☀) -> Dark (🌙) -> System
+          Preference is saved to localStorage and restored on reload.
+          Logic is in the "H. THEME TOGGLE" section of script.js.
+        -->
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle colour theme"
+          title="Cycle theme: system / light / dark"
+        >
+          <span id="themeIcon">&#x1F5A5;</span>
+        </button>
+
+        <!--
+          HAMBURGER - visible only on mobile (<=768px)
+          JS toggles .open class to animate it into an X icon.
+          aria-expanded is updated by script.js for accessibility.
+          aria-controls links it to the sidebar element.
+        -->
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="sidebar"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ==============================================================
+       MAIN CONTENT
+       One continuous page — JS handles smooth-scroll to each
+       section when nav links are clicked (scroll-behavior: smooth
+       is also set on <html> in the CSS as a fallback).
+  ============================================================== -->
+  <main>
+
+    <!-- ============================================================
+         SECTION: HOME / HERO  (#home)
+         ─────────────────────────────────────────────────────────
+         First thing visitors see. Contains:
+           - Availability badge
+           - Animated greeting + name
+           - Typing role animation   → edit `roles` array in script.js
+           - Short bio paragraph
+           - Two CTA buttons (View Projects / Get In Touch)
+           - Scroll-down visual indicator
+    ============================================================ -->
+    <section id="home" aria-label="Home">
+      <div class="container">
+
+        <!-- Pulsing "available" badge -->
+        <div class="hero-tag reveal">
+          <span class="dot" aria-hidden="true"></span>
+          Available for freelance projects
+        </div>
+
+        <!--
+          Main heading.
+          EDIT: Replace "Francis" with your preferred display name.
+        -->
+        <h1 class="hero-title reveal">
+          Hey, I'm<br />
+          <span class="name-accent">Francis.</span>
+        </h1>
+
+        <!--
+          Typing animation container.
+          The .typed-text span is populated by JS — do not put
+          static text inside it or the animation will break.
+          EDIT roles in the `const roles` array inside script.js.
+        -->
+        <div class="hero-role reveal" aria-label="I am a Frontend Developer, UI Designer, and Content Creator">
+          I'm a&nbsp;<span class="typed-text" id="typedText" aria-hidden="true"></span><span class="cursor" aria-hidden="true"></span>
+        </div>
+
+        <!--
+          Short bio.
+          EDIT: Update this copy to reflect your current story.
+        -->
+        <p class="hero-bio reveal">
+          Self-taught frontend developer &amp; content creator from
+          <strong>Ibadan, Nigeria</strong>. I build clean, modern web experiences
+          using HTML, CSS &amp; JavaScript — and document the journey for developers
+          building in public under <strong>@commitfrncs</strong>.
+        </p>
+
+        <!-- Primary call-to-action buttons -->
+        <div class="hero-ctas reveal">
+          <a href="#projects" class="btn-primary">View Projects &nbsp;&#8594;</a>
+          <a href="#contact"  class="btn-outline">Get In Touch</a>
+        </div>
+
+      </div>
+
+      <!-- Animated scroll-down visual cue (decorative, not interactive) -->
+      <div class="scroll-indicator" aria-hidden="true">
+        <span class="scroll-line"></span>
+        <span>SCROLL</span>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         SECTION: ABOUT  (#about)
+         ─────────────────────────────────────────────────────────
+         Two-column grid on desktop, single column on mobile:
+           Left  - Bio text + Download CV button
+           Right - Three stat cards (glassmorphism)
+
+         EDIT: Update bio copy and stat numbers as your work grows.
+    ============================================================ -->
+    <section id="about" aria-label="About me">
+      <div class="container">
+
+        <p class="section-label reveal">About Me</p>
+        <h2 class="section-title reveal">A little bit about<br />who I am.</h2>
+
+        <div class="about-grid">
+
+          <!-- Left column: bio text + CTA -->
+          <div class="about-text reveal">
+            <p>
+              I'm a <strong>self-taught frontend developer</strong> who fell in love
+              with the web and never looked back. I specialise in building clean,
+              well-structured interfaces using vanilla <strong>HTML, CSS &amp;
+              JavaScript</strong> — no heavy framework needed when the fundamentals
+              are solid.
+            </p>
+            <p>
+              Beyond the code, I run <strong>@commitfrncs</strong> — a multi-platform
+              content brand across TikTok, Instagram, YouTube, X, Facebook, Pinterest,
+              and Medium. I document UI tips, developer mindset, and the honest
+              realities of building a freelance career from scratch.
+            </p>
+            <p>
+              When I'm not shipping something, you'll find me deep in motorsport
+              aesthetics, obsessing over type pairings, or reverse-engineering a
+              design I like.
+            </p>
+            <br />
+            <!-- EDIT: Replace href with a direct link to your CV PDF -->
+            <a href="#contact" class="btn-outline" style="display:inline-flex; width:auto;">
+              Download CV &nbsp;&#8595;
+            </a>
+          </div>
+
+          <!-- Right column: stat cards -->
+          <!-- EDIT: Update numbers and labels as your work grows -->
+          <div class="about-stats reveal-stagger">
+
+            <div class="glass-card stat-card reveal">
+              <div class="stat-num">2<span>+</span></div>
+              <div class="stat-label">Years building on the web</div>
+            </div>
+
+            <div class="glass-card stat-card reveal">
+              <div class="stat-num">10<span>+</span></div>
+              <div class="stat-label">Projects shipped</div>
+            </div>
+
+            <div class="glass-card stat-card reveal">
+              <div class="stat-num">7</div>
+              <div class="stat-label">Platforms — one content brand</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         SECTION: SKILLS  (#skills)
+         ─────────────────────────────────────────────────────────
+         Auto-fill CSS grid of skill chips with hover lift effect.
+         EDIT: Add/remove .skill-chip divs to update your stack.
+         Icons are emoji — swap for SVGs if you want pixel-perfect.
+    ============================================================ -->
+    <section id="skills" aria-label="Skills and tech stack">
+      <div class="container">
+
+        <p class="section-label reveal">Tech Stack</p>
+        <h2 class="section-title reveal">What I work with.</h2>
+
+        <div class="skills-grid reveal-stagger">
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#127760;</span> HTML5</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#127912;</span> CSS3</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#9889;</span> JavaScript</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128241;</span> Responsive Design</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128444;</span> CSS Flexbox</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128208;</span> CSS Grid</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128256;</span> Git &amp; GitHub</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128640;</span> GitHub Pages</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#9999;</span> UI Design</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128221;</span> Content Creation</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128295;</span> VS Code</div>
+          <div class="glass-card skill-chip reveal"><span class="skill-icon">&#128230;</span> npm</div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         SECTION: PROJECTS  (#projects)
+         ─────────────────────────────────────────────────────────
+         Cards are dynamically injected into #projectsGrid by
+         renderProjects() inside script.js.
+         Do NOT manually add card HTML inside this div.
+
+         TO ADD OR EDIT PROJECTS:
+           Open script.js and find "A. PROJECTS DATA".
+           Edit the projects[] array there.
+
+         Each rendered card includes:
+           - Project number badge
+           - Title + description
+           - Tech tag chips
+           - GitHub button  (hidden when github: "" is empty)
+           - Live Site button (hidden when live: "" is empty)
+    ============================================================ -->
+    <section id="projects" aria-label="Projects">
+      <div class="container">
+
+        <p class="section-label reveal">Work</p>
+        <h2 class="section-title reveal">Things I've built.</h2>
+
+        <div class="projects-grid reveal-stagger" id="projectsGrid">
+          <!-- Injected at runtime by renderProjects() in script.js -->
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         SECTION: CONTACT  (#contact)
+         ─────────────────────────────────────────────────────────
+         Two-column grid on desktop, single column on mobile:
+           Left  - Intro text + direct contact links
+           Right - Contact form (glass card)
+
+         TO WIRE UP THE FORM:
+           Open script.js and find "I. CONTACT FORM".
+           Replace the alert() block with a fetch() call to
+           Formspree, EmailJS, or Netlify Forms.
+
+         EDIT: Replace the email and social hrefs with real ones.
+    ============================================================ -->
+    <section id="contact" aria-label="Contact">
+      <div class="container">
+
+        <p class="section-label reveal">Contact</p>
+        <h2 class="section-title reveal">Let's work together.</h2>
+
+        <div class="contact-wrapper">
+
+          <!-- Left: intro copy + direct contact links -->
+          <div class="contact-info reveal">
+            <h3>Got a project in mind?</h3>
+            <p>
+              Whether you need a landing page, a full website, or just want to talk
+              shop — my inbox is open. I'm also down for content collabs and
+              freelance opportunities.
+            </p>
+
+            <div class="contact-links">
+              <!-- EDIT: Replace with your real email address -->
+              <a href="mailto:commitfrncs.dev@gmail.com" class="glass-card contact-link">
+                <span class="icon" aria-hidden="true">&#9993;</span>
+                commitfrncs.dev@gmail.com
+              </a>
+              <a href="https://x.com/commitfrncs" target="_blank" rel="noopener noreferrer"
+                class="glass-card contact-link">
+                <span class="icon" aria-hidden="true">&#x1D54F;</span>
+                @commitfrncs on X
+              </a>
+              <a href="https://tiktok.com/@commitfrncs" target="_blank" rel="noopener noreferrer"
+                class="glass-card contact-link">
+                <span class="icon" aria-hidden="true">&#9654;</span>
+                @commitfrncs on TikTok
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: contact form inside a glass card -->
+          <div class="glass-card contact-form reveal">
+            <!--
+              This form does NOT submit to a server by default.
+              Wire it up via handleFormSubmit() in script.js.
+              Recommended free options: Formspree, EmailJS, Netlify.
+            -->
+
+            <div class="form-group">
+              <label class="form-label" for="contactName">Name</label>
+              <input
+                type="text"
+                id="contactName"
+                class="form-input"
+                placeholder="Your name"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactEmail">Email</label>
+              <input
+                type="email"
+                id="contactEmail"
+                class="form-input"
+                placeholder="your@email.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactMsg">Message</label>
+              <textarea
+                id="contactMsg"
+                class="form-textarea"
+                placeholder="Tell me about your project..."
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="button"
+              class="btn-primary"
+              style="width:100%; justify-content:center;"
+              onclick="handleFormSubmit(event)"
+            >
+              Send Message &nbsp;&#8594;
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ==============================================================
+       FOOTER
+       ─────────────────────────────────────────────────────────────
+       EDIT: Update copyright year and social hrefs as needed.
+  ============================================================== -->
+  <footer>
+    <div class="container footer-inner">
+
+      <p class="footer-copy">
+        &copy; 2026 <span>commitfrncs</span>. Built with HTML, CSS &amp; JS.
+      </p>
+
+      <!-- Social icon links row -->
+      <div class="footer-socials" aria-label="Social media links">
+        <a href="https://github.com/commitfrncs"    target="_blank" rel="noopener noreferrer" title="GitHub"   >GH</a>
+        <a href="https://x.com/commitfrncs"         target="_blank" rel="noopener noreferrer" title="X"        >&#x1D54F;</a>
+        <a href="https://tiktok.com/@commitfrncs"   target="_blank" rel="noopener noreferrer" title="TikTok"   >TK</a>
+        <a href="https://youtube.com/@commitfrncs"  target="_blank" rel="noopener noreferrer" title="YouTube"  >YT</a>
+        <a href="https://instagram.com/commitfrncs" target="_blank" rel="noopener noreferrer" title="Instagram">IG</a>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ==============================================================
+       MAIN SCRIPT
+       ─────────────────────────────────────────────────────────────
+       Loaded at the very bottom of <body> so the entire DOM is
+       fully parsed before any JS runs. This means getElementById()
+       and querySelector() calls will always find their targets.
+
+       Path: assets/js/script.js
+
+       Sections inside that file:
+         A. PROJECTS DATA       <- edit your projects here
+         B. PROJECT RENDERER
+         C. TYPING ANIMATION
+         D. NAVBAR SCROLL EFFECT
+         E. ACTIVE NAV LINK
+         F. MOBILE SIDEBAR
+         G. SCROLL REVEAL
+         H. THEME TOGGLE
+         I. CONTACT FORM
+         J. INIT
+  ============================================================== -->
+  <script src="assets/js/script.js"></script>
+
+</body>
+</html>
