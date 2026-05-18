@@ -1,21 +1,3 @@
-
-
-  <!-- ============================================================
-       JAVASCRIPT
-       ─────────────────────────────────────────────────────────
-       SECTIONS:
-         A. PROJECTS DATA       ← main thing you'll edit
-         B. PROJECT RENDERER
-         C. TYPING ANIMATION
-         D. NAVBAR SCROLL EFFECT
-         E. ACTIVE NAV LINK
-         F. MOBILE SIDEBAR
-         G. SCROLL REVEAL
-         H. THEME TOGGLE
-         I. CONTACT FORM
-         J. INIT
-  ============================================================ -->
-  
     /* ===========================================================
        A. PROJECTS DATA
        ─────────────────────────────────────────────────────────
