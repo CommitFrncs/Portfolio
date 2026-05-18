@@ -1,0 +1,888 @@
+    :root {
+      /* ── ACCENT ─────────────────────────────────────────────── */
+      --accent:         #635BFF;            /* electric indigo     */
+      --accent-muted:   rgba(99,91,255,.13);
+      --accent-border:  rgba(99,91,255,.32);
+
+      /* ── DARK THEME (default) ───────────────────────────────── */
+      --bg:             #0D0D0F;
+      --bg-surface:     #111115;
+      --glass-bg:       rgba(255,255,255,.04);
+      --glass-border:   rgba(255,255,255,.08);
+      --glass-shadow:   0 8px 40px rgba(0,0,0,.45);
+      --text-primary:   #F0F0F5;
+      --text-secondary: #8888A2;
+      --text-muted:     #50505E;
+      --nav-bg:         rgba(13,13,15,.82);
+
+      /* ── SPACING & SHAPE ────────────────────────────────────── */
+      --radius-sm:  8px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+
+      /* ── TRANSITIONS ────────────────────────────────────────── */
+      --ease:       cubic-bezier(.4,0,.2,1);
+      --transition: all .25s var(--ease);
+    }
+
+    /* Light mode — triggered by OS/browser preference */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:             #F3F3F8;
+        --bg-surface:     #FFFFFF;
+        --glass-bg:       rgba(255,255,255,.60);
+        --glass-border:   rgba(0,0,0,.07);
+        --glass-shadow:   0 8px 40px rgba(0,0,0,.10);
+        --text-primary:   #111118;
+        --text-secondary: #55556A;
+        --text-muted:     #9999AE;
+        --nav-bg:         rgba(243,243,248,.88);
+        --accent:         #4F48E8;    /* slightly deeper for light bg */
+        --accent-muted:   rgba(79,72,232,.10);
+        --accent-border:  rgba(79,72,232,.28);
+      }
+    }
+
+    /* Manual overrides — set by data-theme attribute via JS toggle */
+    [data-theme="light"] {
+      --bg:             #F3F3F8;
+      --bg-surface:     #FFFFFF;
+      --glass-bg:       rgba(255,255,255,.60);
+      --glass-border:   rgba(0,0,0,.07);
+      --glass-shadow:   0 8px 40px rgba(0,0,0,.10);
+      --text-primary:   #111118;
+      --text-secondary: #55556A;
+      --text-muted:     #9999AE;
+      --nav-bg:         rgba(243,243,248,.88);
+      --accent:         #4F48E8;
+      --accent-muted:   rgba(79,72,232,.10);
+      --accent-border:  rgba(79,72,232,.28);
+    }
+
+    [data-theme="dark"] {
+      --bg:             #0D0D0F;
+      --bg-surface:     #111115;
+      --glass-bg:       rgba(255,255,255,.04);
+      --glass-border:   rgba(255,255,255,.08);
+      --glass-shadow:   0 8px 40px rgba(0,0,0,.45);
+      --text-primary:   #F0F0F5;
+      --text-secondary: #8888A2;
+      --text-muted:     #50505E;
+      --nav-bg:         rgba(13,13,15,.82);
+      --accent:         #635BFF;
+      --accent-muted:   rgba(99,91,255,.13);
+      --accent-border:  rgba(99,91,255,.32);
+    }
+
+
+    /* ============================================================
+       2. RESET & BASE
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background-color .35s ease, color .35s ease;
+    }
+
+    /* Heading font applied globally to all h-tags */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.025em;
+    }
+
+    a        { color: inherit; text-decoration: none; }
+    img      { max-width: 100%; display: block; }
+    button   { font-family: inherit; cursor: pointer; }
+
+    section  { padding: 104px 0; position: relative; }
+
+    /* Centered max-width wrapper — used everywhere */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Reusable glass card component */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow);
+    }
+
+
+    /* ============================================================
+       3. BACKGROUND ORBS
+       Blurred color blobs that sit beneath the entire page.
+       They give the glass cards something to "blur through" —
+       without them glassmorphism looks flat.
+       Tweak sizes, positions, and colors freely.
+    ============================================================ */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(110px);
+      opacity: .16;
+    }
+
+    @media (prefers-color-scheme: light) { .bg-orb { opacity: .09; } }
+    [data-theme="light"] .bg-orb          { opacity: .09; }
+    [data-theme="dark"]  .bg-orb          { opacity: .16; }
+
+    .orb-1 {  /* top-right: accent */
+      width: 520px; height: 520px;
+      background: var(--accent);
+      top: -120px; right: -180px;
+    }
+    .orb-2 {  /* mid-left: teal complement */
+      width: 420px; height: 420px;
+      background: #00B4D8;
+      top: 50%; left: -130px;
+      transform: translateY(-50%);
+    }
+    .orb-3 {  /* bottom-right: accent faint */
+      width: 320px; height: 320px;
+      background: var(--accent);
+      bottom: -60px; right: 15%;
+      opacity: .08;
+    }
+
+    /* Everything sits above the orbs */
+    nav, main, footer, aside { position: relative; z-index: 1; }
+
+
+    /* ============================================================
+       4. SCROLLBAR
+    ============================================================ */
+    ::-webkit-scrollbar        { width: 4px; }
+    ::-webkit-scrollbar-track  { background: var(--bg); }
+    ::-webkit-scrollbar-thumb  { background: var(--accent); border-radius: 99px; }
+
+
+    /* ============================================================
+       5. NAVBAR
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      transition: var(--transition);
+    }
+
+    /* Scrolled state — glass blur kicks in */
+    #navbar.scrolled {
+      background: var(--nav-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 12px 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo */
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -.03em;
+      transition: var(--transition);
+    }
+    .nav-logo span { color: var(--accent); }
+
+    /* Desktop links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    /* Underline on hover/active */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width .3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+
+    /* Right cluster: theme toggle + hamburger */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Theme toggle button */
+    .theme-toggle {
+      width: 38px; height: 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      color: var(--text-secondary);
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-border);
+      background: var(--accent-muted);
+    }
+
+    /* Hamburger button — mobile only, shown via media query */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      padding: 6px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--text-primary);
+      border-radius: 99px;
+      transition: var(--transition);
+    }
+
+    /* X shape when open */
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg);  }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0);          }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg);}
+
+
+    /* ============================================================
+       6. MOBILE SIDEBAR
+    ============================================================ */
+    /* Dimmed overlay behind the sidebar drawer */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(4px);
+      z-index: 99;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .sidebar-overlay.visible { opacity: 1; }
+
+    /* The sliding drawer itself */
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      height: 100vh; width: 280px;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--glass-border);
+      z-index: 100;
+      padding: 80px 28px 36px;
+      transform: translateX(105%);
+      transition: transform .36s var(--ease);
+      display: flex;
+      flex-direction: column;
+    }
+    #sidebar.open { transform: translateX(0); }
+
+    .sidebar-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .sidebar-links a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .sidebar-links a:hover,
+    .sidebar-links a.active {
+      color: var(--text-primary);
+      background: var(--accent-muted);
+    }
+
+    /* Numbered prefix on sidebar items */
+    .link-num {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .68rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Social icons row at bottom of sidebar */
+    .sidebar-socials {
+      display: flex;
+      gap: 10px;
+      padding-top: 24px;
+      border-top: 1px solid var(--glass-border);
+    }
+    .sidebar-socials a {
+      width: 38px; height: 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .82rem;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    .sidebar-socials a:hover {
+      color: var(--accent);
+      border-color: var(--accent-border);
+    }
+
+
+    /* ============================================================
+       7. HERO SECTION
+    ============================================================ */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+    }
+
+    /* "Available for projects" badge */
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-muted);
+      border: 1px solid var(--accent-border);
+      padding: 6px 14px;
+      border-radius: 99px;
+      margin-bottom: 24px;
+    }
+    .hero-tag .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -.045em;
+      line-height: 1.04;
+      margin-bottom: 10px;
+    }
+    .hero-title .name-accent { color: var(--accent); }
+
+    /* Typing animation row */
+    .hero-role {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.45rem);
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      min-height: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-role .typed-text { color: var(--text-primary); }
+
+    /* Blinking text cursor */
+    .hero-role .cursor {
+      display: inline-block;
+      width: 2px; height: 1.1em;
+      background: var(--accent);
+      vertical-align: middle;
+      animation: blink .75s ease infinite;
+    }
+
+    .hero-bio {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      line-height: 1.85;
+      margin-bottom: 40px;
+    }
+    .hero-bio strong { color: var(--text-primary); font-weight: 600; }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600; font-size: .9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      transition: var(--transition);
+    }
+    .btn-primary:hover { opacity: .86; transform: translateY(-2px); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      color: var(--text-primary);
+      font-weight: 600; font-size: .9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      transition: var(--transition);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent-border);
+      background: var(--accent-muted);
+      transform: translateY(-2px);
+    }
+
+    /* Animated scroll-down line */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: .7rem;
+      letter-spacing: .1em;
+    }
+    .scroll-indicator .scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+
+    /* ============================================================
+       8. ABOUT SECTION
+    ============================================================ */
+
+    /* Section label (small uppercase above title) */
+    .section-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin-bottom: 56px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.9;
+    }
+    .about-text p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Stack of stat cards */
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .stat-card { padding: 24px 28px; }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-num span { color: var(--accent); }
+
+    .stat-label {
+      font-size: .83rem;
+      color: var(--text-secondary);
+    }
+
+
+    /* ============================================================
+       9. SKILLS SECTION
+    ============================================================ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 10px;
+    }
+
+    .skill-chip {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      cursor: default;
+    }
+    .skill-chip:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-border);
+      background: var(--accent-muted);
+      transform: translateY(-3px);
+    }
+    .skill-icon { font-size: 1.15rem; flex-shrink: 0; }
+
+
+    /* ============================================================
+       10. PROJECTS SECTION
+    ============================================================ */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .project-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s ease;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      transform: translateY(-7px);
+      border-color: var(--accent-border);
+      box-shadow: 0 24px 64px rgba(99,91,255,.16);
+    }
+
+    .project-num {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .project-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      font-size: .87rem;
+      color: var(--text-secondary);
+      line-height: 1.78;
+      margin-bottom: 20px;
+      flex: 1;       /* pushes tags + actions to bottom */
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+
+    .project-tag {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      padding: 4px 10px;
+      background: var(--accent-muted);
+      color: var(--accent);
+      border-radius: 99px;
+      border: 1px solid var(--accent-border);
+    }
+
+    /* Two-button row (GitHub + Live) */
+    .project-actions { display: flex; gap: 10px; }
+
+    .btn-sm {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
+      font-size: .8rem; font-weight: 600;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      color: var(--text-secondary);
+      flex: 1;
+      transition: var(--transition);
+    }
+    .btn-sm:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-border);
+    }
+    .btn-sm.btn-accent {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+    .btn-sm.btn-accent:hover { opacity: .86; color: #fff; }
+
+
+    /* ============================================================
+       11. CONTACT SECTION
+    ============================================================ */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .contact-info p {
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 32px;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 10px; }
+
+    .contact-link {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 18px;
+      border-radius: var(--radius-sm);
+      font-size: .875rem;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    .contact-link:hover {
+      color: var(--text-primary);
+      background: var(--accent-muted);
+      border-color: var(--accent-border);
+    }
+    .contact-link .icon { color: var(--accent); font-size: 1rem; }
+
+    /* Form inside glass card */
+    .contact-form { padding: 36px; }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-label {
+      display: block;
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      resize: none;
+      transition: var(--transition);
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-border);
+      background: var(--accent-muted);
+    }
+    .form-textarea { height: 130px; }
+
+
+    /* ============================================================
+       12. FOOTER
+    ============================================================ */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: .8rem;
+      color: var(--text-muted);
+    }
+    .footer-copy span { color: var(--accent); }
+
+    .footer-socials { display: flex; gap: 8px; }
+
+    .footer-socials a {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .footer-socials a:hover {
+      color: var(--accent);
+      border-color: var(--accent-border);
+    }
+
+
+    /* ============================================================
+       13. ANIMATIONS & SCROLL REVEALS
+    ============================================================ */
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.5); opacity: .7; }
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    @keyframes scrollLine {
+      0%  { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100%{ transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* Base hidden state for scroll-reveal elements */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delays for children inside a .reveal-stagger parent */
+    .reveal-stagger .reveal:nth-child(1) { transition-delay: .05s; }
+    .reveal-stagger .reveal:nth-child(2) { transition-delay: .10s; }
+    .reveal-stagger .reveal:nth-child(3) { transition-delay: .15s; }
+    .reveal-stagger .reveal:nth-child(4) { transition-delay: .20s; }
+    .reveal-stagger .reveal:nth-child(5) { transition-delay: .25s; }
+    .reveal-stagger .reveal:nth-child(6) { transition-delay: .30s; }
+    .reveal-stagger .reveal:nth-child(7) { transition-delay: .35s; }
+    .reveal-stagger .reveal:nth-child(8) { transition-delay: .40s; }
+
+
+    /* ============================================================
+       14. MEDIA QUERIES
+    ============================================================ */
+
+    /* Tablet — two-column layouts collapse */
+    @media (max-width: 900px) {
+      .about-grid      { grid-template-columns: 1fr; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+    }
+
+    /* Mobile — 768px breakpoint */
+    @media (max-width: 768px) {
+      section        { padding: 80px 0; }
+
+      /* Hide desktop nav, show hamburger + sidebar overlay */
+      .nav-links         { display: none; }
+      .hamburger         { display: flex; }
+      .sidebar-overlay   { display: block; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+
+      /* Stats row in about */
+      .about-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .stat-card { flex: 1 1 140px; }
+    }
+
+    /* Small phones */
+    @media (max-width: 480px) {
+      .hero-ctas     { flex-direction: column; }
+      .btn-primary,
+      .btn-outline   { width: 100%; justify-content: center; }
+      .skills-grid   { grid-template-columns: 1fr 1fr; }
+    }
